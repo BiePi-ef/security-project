@@ -1,0 +1,27 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+    # on init, runs the init script to create an admin user
+      - ./mongo-init.js:/init.js:ro
+      - mongodb:/data/db
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    command: >
+      bash -c "
+        echo 'Starting Mongo WITHOUT auth...';
+        mongod --bind_ip_all --fork --logpath /data/db/mongodb.log;
+        sleep 6;
+        mongosh admin < /init.js;
+        echo 'Restarting Mongo WITH auth...';
+        mongod --shutdown;
+        exec mongod --bind_ip_all --auth;
+      "
+#above is bash code that runs the shell twice on container init
+volumes:
+  mongodb:
