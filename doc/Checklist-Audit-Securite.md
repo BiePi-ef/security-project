@@ -23,6 +23,7 @@
 
 ---
 
+// TDO
 ### 1.2 Mode Production
 
 - [ ] **Debug désactivé en production** : Les messages d'erreur détaillés (Stack Trace) ne s'affichent PAS aux utilisateurs
@@ -37,6 +38,7 @@
 
 ---
 
+// TDO 
 ### 1.3 HTTPS Local
 
 - [ ] **Application accessible en HTTPS** (même sur localhost)
@@ -105,6 +107,7 @@
 
 ---
 
+// TDO
 ### 2.3 Cookies & Sessions
 
 - [ ] **Cookie de session avec HttpOnly** : `Set-Cookie: sessionId=...; HttpOnly; Secure; SameSite=Strict`
@@ -128,6 +131,7 @@
 
 *Objectif : Appliquer le principe de "Moindre Privilège".*
 
+// OK
 ### 3.1 Rôles distincts
 
 - [ ] **Au minimum 2 rôles implémentés** : Exemple : `USER` et `ADMIN`
@@ -142,6 +146,7 @@
 
 ---
 
+// OK
 ### 3.2 Vérification d'accès sur chaque route
 
 - [ ] **Pas d'accès direct à une URL admin sans permission**
@@ -158,6 +163,7 @@
 
 ---
 
+// TDO
 ### 3.3 Pas de modification de données d'un autre utilisateur 
 
 - [ ] **L'utilisateur A ne peut pas voir/modifier les données de l'utilisateur B**

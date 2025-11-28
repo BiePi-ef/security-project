@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
 
-export default function cryptPassword(password) {
+export default function crypt(value) {
   const saltRounds = 10;
   bcrypt.genSalt(saltRounds, (err, salt) => { 
     if (err) {
         throw err;
     }
-    bcrypt.hash(password, salt, (err, hash) => {
+    bcrypt.hash(value, salt, (err, hash) => {
       if (err) {
           throw err;
       }

@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import isAdmin from "../services/authService.js";
-import cryptPassword from '../services/hash.js';
+import crypt from '../services/hash.js';
 
 const createUser = async (req, res, next) => {
   try {
@@ -47,10 +47,10 @@ const createUser = async (req, res, next) => {
       throw err;
     }
     
-    const cryptedPassword = cryptPassword(password);
+    const cryptedPassword = crypt(password);
     
     // Single insert, no session needed
-    const newUser = await User.create({ userName, email, cryptedPassword, role });
+    const newUser = User.create({ userName, email, cryptedPassword, role });
 
     return res.status(201).json(newUser);
   } catch (err) {
