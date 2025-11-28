@@ -1,5 +1,6 @@
+import LastConnections from "../models/lastConnections.js";
 import User from "../models/user.js";
-import cryptPassword from "../services/hash.js";
+import crypt from "../services/hash.js";
 import jwt from 'jsonwebtoken';
 
 process.loadEnvFile("./.env");
@@ -7,9 +8,25 @@ process.loadEnvFile("./.env");
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    
+    // if someone tries to connect with a less than 1 hour expired token :
+    if (req.headers.authorization) {
+      let connection = await LastConnections
+        .findOne({token: crypt(req.headers.authorization)})
+        .sort({ created_at: -1 });
+      console.log(Date.now());
+      console.log(connection.created_at.getTime());
+      // 1 heure s'est écoulé || token expired et moins qu'une heure
+      if (
+        (Date.now() - connection.created_at.getTime()) > 3600000 || 
+        ( connection.expired && Date.now() - connection.created_at.getTime() < 3600000 ) 
+      ) {
+        throw new Error('Invalid token');
+      }
+    }
 
     // Find user
-    const cryptedPassword = cryptPassword(password);
+    const cryptedPassword = crypt(password);
     const user = await User.findOne({email: email, password: cryptedPassword});
     
     if (!user) {
@@ -25,6 +42,10 @@ const login = async (req, res, next) => {
     // Sign token
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
+    // keep a 1h trace of loggin in DB, to allow a loggout before the token expires
+    const hashedToken = crypt(token);
+    LastConnections.create({ token : hashedToken });
+
     res.json({ message: 'Login successful', token });
   } catch (err) {
     if (err.message === 'Invalid credentials') return res.status(401).json({
@@ -33,12 +54,39 @@ const login = async (req, res, next) => {
     });
 
     return res.status(500).send({
-      error: err,
+      error: err.message,
       message: 'Error during login'
     });
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    let cryptedToken = crypt(req.body.token);
+    const connection = await LastConnections
+    .findOneAndUpdate(
+      {token: cryptedToken}, 
+      {expired: true},
+      {sort: {created_at : -1}}
+    );
+        
+    // I need to destroy the header in the frontend as well
+    res.json({ message: 'Logout successful' }); 
+  } catch (err) {
+    if (err.message === 'Invalid credentials') return res.status(401).json({
+      error: err,
+      message: 'Invalid credentials'
+    });
+
+    return res.status(500).send({
+      error: err.message,
+      message: 'Error during logout'
+    });
+  }
+};
+
+
 export default {
-  login
+  login,
+  logout
 }

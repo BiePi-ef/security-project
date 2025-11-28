@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import {isAdmin as isAdminS} from '../services/authService.js';
-import User from '../models/user.js';
 
 process.loadEnvFile("./.env");
 

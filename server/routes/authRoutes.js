@@ -4,9 +4,7 @@ import authController from '../controller/authController.js';
 
 let router = express.Router();
 
-// in fine :
-// router.get('/users', userController.getAllUsers);
-
 router.post('/login', authController.login);
+router.post('/logout', authMiddleware.isAuth, authController.logout)
 
 export default router;
