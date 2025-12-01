@@ -4,8 +4,20 @@ import crypt from '../services/hash.js';
 
 const createUser = async (req, res, next) => {
   try {
-    const { userName, email, password, role } = req.body;
+    let { userName, email, password, role } = req.body;
     let error = [];
+
+    // test isAdmin : allows for admins creation
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      let user = decoded;
+      if (!isAdmin(user)){
+        role = "user";
+      }
+    } else {
+      role = "user";
+    }
     
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });

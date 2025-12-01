@@ -1,4 +1,5 @@
 import Object from "../models/object.js";
+import isAdmin from "../services/authService.js";
 
 process.loadEnvFile("./.env");
 
@@ -65,8 +66,8 @@ const create = async (req, res) => {
     })
 
     return res.status(200).send({
-      newObjectId : "6929c1afd8c5e1e0486e1d32"
-    });;
+      newObjectId : newObject.id
+    });
   } catch (err) {
     return res.status(500).send({
       error: err.message,
@@ -75,14 +76,77 @@ const create = async (req, res) => {
   }
 }
 
+// user get all public / admin get all
+const getAll = async (req, res) => {
+  try {
+    let filter = req.params.filter
+    let objects;
 
-// get all by user 
-//  L> if user id === current user id || current user isAdmin()  : get public and private
-//  l> else : get public
+    if (isAdmin(req.user)) {
+      switch (filter) {
+        case "public":
+          objects = await Object
+            .find({visibility: filter})
+            .exec();
+          break;
+          case "private":
+            objects = await Object
+            .find({visibility: "private"})
+            .exec();
+            break;
+          default:
+            objects = await Object
+            .find()
+            .exec();
+            break;
+      }
+    } else {
+      switch (filter){
+        case "public":
+          objects = await Object
+          .find(
+            {visibility: 'public'},
+          )
+          .exec();
+          break;
+        case "private":
+          objects = await Object
+          .find({ $and: [ 
+            {visibility: "private"},
+            {author: req.user.id},
+          ]})
+          .exec();
+          break;
+        default:
+          objects = await Object
+          .find({ $or: [
+            {visibility: "public"},
+            {author: req.user.id},
+          ]})
+          .exec();
+          break;
+      } 
+    }
+
+    return res.status(200).send({
+      objects: objects
+    });
+  } catch (err) {
+    return res.status(500).send({
+      error: err.message,
+      message: 'Error during object creation'
+    });
+  }
+}
 
 // get all public
 // get all private
 // -> calls a service that takes an argument public/private
+
+// get all by user 
+//  L> if user id === current user id || current user isAdmin() : get public and private
+//  l> else : get public
+
 
 // update
 // if user id === current user id || current user isAdmin()
@@ -92,4 +156,5 @@ const create = async (req, res) => {
 
 export default {
   create,
+  getAll,
 }

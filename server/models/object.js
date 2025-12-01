@@ -31,7 +31,7 @@ const objectSchema = new mongoose.Schema({
   category: {type: String}, // TDO : implement dynamique enum from bdd (type is a bd schema)
   options: optionsSchema, // either one or several option schemas
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  visibility: {type: [String], enum: ["Public", "Private"], required: true}, // public : everyone, private : author and admins 
+  visibility: {type: [String], enum: ["public", "private"], required: true}, // public : everyone, private : author and admins 
   search_tags: [String],
   created_at: { type: Date, default: Date.now },
   last_updated_at: { type: [Date], default: [Date.now()] },
