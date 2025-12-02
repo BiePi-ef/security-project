@@ -4,7 +4,8 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 let router = express.Router();  
 
-router.post('/', authMiddleware.isAuth, objectController.create);
-router.get('/:filter', authMiddleware.isAuth, objectController.getAll);
+router.post('', authMiddleware.isAuth, objectController.create);
+router.get('', authMiddleware.isAuth, objectController.getAll);
+router.get('/:id', authMiddleware.isAuth, objectController.getOneById);
 
 export default router;

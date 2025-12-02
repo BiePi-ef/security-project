@@ -19,10 +19,23 @@ Library of different Roleplay Tabletop Game 'objects'. Users can access 'public'
     optional : create a character ?
 
 ## Security
+### dev
+Sonarqube tests are not automatically run on commit or push. Indeed, sonarqube-scanner has been installed on  front and server sides, but the github repo encompasses both. If I have more time, a later solution will run both parts as I push. For now, one need to manually run the test with the following command :
+sonar-scanner \
+  -Dsonar.projectKey=my-sonarqube-project-name \
+  -Dsonar.sources= front/. \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=YOUR_GENERATED_TOKEN
+and
+sonar-scanner \
+  -Dsonar.projectKey=my-sonarqube-project-name \
+  -Dsonar.sources= server/. \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.token=YOUR_GENERATED_TOKEN
 
 ## BDD
 make sure the container and volumes are not already existing when building, or it won't be able to generate properly.
 
 ## confidentialité :
-etre clair : votre historique de connection (date et heure) est conservé pendant 1 heure après votre dernière connection, pour des raisons de sécurité
-Toutes les données EXCEPTE le mot de passe utilisateur sont consultable par un admin a tout moment.
+Votre historique de connection (date et heure) est conservée, pour des raisons de sécurité.
+Toutes les données EXCEPTE le mot de passe utilisateur décrypté sont consultable par un admin a tout moment.

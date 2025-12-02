@@ -14,9 +14,8 @@ const login = async (req, res, next) => {
       let connection = await LastConnections
         .findOne({token: crypt(req.headers.authorization)})
         .sort({ created_at: -1 });
-      console.log(Date.now());
-      console.log(connection.created_at.getTime());
-      // 1 heure s'est écoulé || token expired et moins qu'une heure
+
+        // 1 heure s'est écoulé || token expired et moins qu'une heure
       if (
         (Date.now() - connection.created_at.getTime()) > 3600000 || 
         ( connection.expired && Date.now() - connection.created_at.getTime() < 3600000 ) 
@@ -46,7 +45,8 @@ const login = async (req, res, next) => {
     const hashedToken = crypt(token);
     LastConnections.create({ token : hashedToken });
 
-    res.json({ message: 'Login successful', token });
+    // giving user._id could be a problem.
+    res.json({ message: 'Login successful', token, id: user._id });
   } catch (err) {
     if (err.message === 'Invalid credentials') return res.status(401).json({
       error: err,

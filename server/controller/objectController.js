@@ -79,7 +79,7 @@ const create = async (req, res) => {
 // user get all public / admin get all
 const getAll = async (req, res) => {
   try {
-    let filter = req.params.filter
+    let filter = req.query.filter
     let objects;
 
     if (isAdmin(req.user)) {
@@ -139,14 +139,37 @@ const getAll = async (req, res) => {
   }
 }
 
-// get all public
-// get all private
-// -> calls a service that takes an argument public/private
-
 // get all by user 
 //  L> if user id === current user id || current user isAdmin() : get public and private
 //  l> else : get public
 
+const getOneById = async (req, res) => {
+  try {
+    if (isAdmin(req.user)) {
+      const found = await Object.findById(
+        req.params.id
+      ).exec();
+      return res.status(200).send({ object: found });
+    } else {
+      const found = await Object.findOne({
+        $or : [
+          { _id: req.params.id, author: req.user.id },
+          { _id: req.params.id, visibility: "public" }
+        ]
+      }).exec();
+      if (found) {
+        return res.status(200).send({ object: found });
+      }
+      return res.status(404).send({ message: 'Object not found or unauthorized' });
+    }
+
+  } catch (err) {
+    return res.status(500).send({
+      error: err.message,
+      message: 'Error during object retrieval'
+    });
+  }
+};
 
 // update
 // if user id === current user id || current user isAdmin()
@@ -157,4 +180,5 @@ const getAll = async (req, res) => {
 export default {
   create,
   getAll,
+  getOneById,
 }
