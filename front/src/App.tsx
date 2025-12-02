@@ -1,7 +1,8 @@
 import {BrowserRouter, Route, Routes } from 'react-router-dom';
 import Welcome from './pages/Welcome';
-import Browse from './pages/Browse';
-import CreateObject from './pages/CreateObject';
+import Browse from './pages/objects/Browse';
+import CreateObject from './pages/objects/CreateObject';
+import ObjectDetails from './pages/objects/ObjectDetails';
 import Profile from './pages/Profile';
 import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Welcome/>} />
         <Route path="/browse" element={<Browse/>} />
         <Route path="/createObject" element={<CreateObject/>} />
+        <Route path="/objects/:id" element={<ObjectDetails/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />

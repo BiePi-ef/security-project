@@ -1,0 +1,36 @@
+.object-details-container{max-width:900px;margin:24px auto;padding:16px}
+.back-btn{background:#eee;border:1px solid #ddd;padding:8px 12px;border-radius:6px;cursor:pointer;margin-bottom:12px}
+.object-card{background:#fff;border:1px solid #e6e6e6;padding:24px;border-radius:8px}
+
+.object-title{margin:0 0 12px;font-size:32px;font-weight:700;color:#000}
+
+.object-tags-subtitle{margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap}
+.tag-subtle{display:inline-block;background:#f5f5f5;color:#999;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500}
+
+.object-field{margin:12px 0;display:flex;gap:12px;align-items:flex-start}
+.field-label{font-weight:600;min-width:100px;color:#333;font-size:14px}
+.field-value{color:#555;flex:1;font-size:14px}
+
+/* Recursive nested rendering */
+.nested-object,.nested-array{margin-left:12px}
+.nested-entry{margin:6px 0;padding-left:8px;border-left:2px solid #eee;display:flex;align-items:flex-start;gap:4px}
+.nested-key{font-weight:600;color:#333;flex-shrink:0}
+.nested-separator{margin:0 4px;color:#999;flex-shrink:0}
+.nested-value{display:block;margin-left:0;color:#555;flex:1}
+.nested-list{margin:4px 0;padding-left:20px}
+.nested-list li{margin:2px 0}
+.nested-primitive{color:#555}
+.nested-null{color:#ccc;font-style:italic}
+.nested-empty{color:#999}
+.nested-depth-1{margin-left:8px}
+.nested-depth-2{margin-left:6px}
+.nested-depth-3 {margin-left:4px}
+
+.object-timestamps{margin-top:28px;padding-top:16px;border-top:1px solid #f0f0f0;font-size:12px;color:#999}
+.timestamp-row{margin-bottom:4px}
+
+.info{color:#555;padding:12px}
+.error{color:#d00;padding:12px}
+
+
+

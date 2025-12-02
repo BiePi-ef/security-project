@@ -20,3 +20,5 @@
 
 .browse-select { padding:8px 10px; border-radius:6px; border:1px solid #333; background:#1a1a1a; color:#fff; }
 .browse-search { padding:8px 12px; border-radius:6px; border:1px solid #333; background:#111; color:#fff; min-width:280px; }
+
+.browse-card-link { display:block; text-decoration:none; color:inherit; }

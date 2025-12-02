@@ -1,12 +1,12 @@
-
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Browse.css';
 
 type BrowseObj = {
   _id: string;
   name: string;
   category?: string;
-  tags?: string[];
+  search_tags?: string[];
   visibility?: 'public' | 'private' | string;
   description?: string;
 };
@@ -63,7 +63,6 @@ export default function Browse() {
         } else {
           setItems([]);
         }
-        console.debug('objects fetch response shape:', data);
       } catch (err) {
         console.log(err);
         setError(err instanceof Error ? err.message : String(err));
@@ -75,7 +74,7 @@ export default function Browse() {
     fetchObjects();
   }, [filter]);
 
-  // client side filtering + search across name, category, tags
+  // client side filtering + search across name, category, search_tags
   const filtered = useMemo(() => {
     const q = debouncedQuery.toLowerCase();
     if (!q) return items;
@@ -83,8 +82,8 @@ export default function Browse() {
       if (!it) return false;
       const name = (it.name || '').toString().toLowerCase();
       const cat = (it.category || '').toString().toLowerCase();
-      const tags = (it.tags || []).map((t) => t.toString().toLowerCase()).join(' ');
-      return name.includes(q) || cat.includes(q) || tags.includes(q);
+      const search_tags = (it.search_tags || []).map((t) => t.toString().toLowerCase()).join(' ');
+      return name.includes(q) || cat.includes(q) || search_tags.includes(q);
     });
   }, [items, debouncedQuery]);
 
@@ -118,21 +117,23 @@ export default function Browse() {
         <div className="browse-list">
           {Array.isArray(filtered) ? (
             filtered.map((obj) => (
-              <div key={obj._id} className="browse-card">
-                <div className="browse-card-header">
-                  <h3 className="browse-card-title">{obj.name}</h3>
-                  <small className="browse-card-visibility">{obj.visibility ?? 'public'}</small>
-                </div>
-                <div className="browse-card-category">{obj.category}</div>
-                {obj.tags && obj.tags.length > 0 && (
-                  <div className="browse-card-tags">
-                    {obj.tags.map((t) => (
-                      <span key={t} className="browse-tag">{t}</span>
-                    ))}
+              <Link key={obj._id} to={`/objects/${obj._id}`} className="browse-card-link">
+                <div className="browse-card">
+                  <div className="browse-card-header">
+                    <h3 className="browse-card-title">{obj.name}</h3>
+                    <small className="browse-card-visibility">{obj.visibility ?? 'public'}</small>
                   </div>
-                )}
-                {obj.description && <p className="browse-card-desc">{obj.description}</p>}
-              </div>
+                  <div className="browse-card-category">{obj.category}</div>
+                  {obj.search_tags && obj.search_tags.length > 0 && (
+                    <div className="browse-card-search_tags">
+                      {obj.search_tags.map((t) => (
+                        <span key={t} className="browse-tag">{t}</span>
+                      ))}
+                    </div>
+                  )}
+                  {obj.description && <p className="browse-card-desc">{obj.description}</p>}
+                </div>
+              </Link>
             ))
           ) : (
             <div className="browse-info">Unexpected data format.</div>

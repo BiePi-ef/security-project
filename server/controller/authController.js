@@ -46,7 +46,7 @@ const login = async (req, res, next) => {
     LastConnections.create({ token : hashedToken });
 
     // giving user._id could be a problem.
-    res.json({ message: 'Login successful', token, id: user._id });
+    res.json({ message: 'Login successful', token, id: user._id, role: user.role });
   } catch (err) {
     if (err.message === 'Invalid credentials') return res.status(401).json({
       error: err,
@@ -65,12 +65,11 @@ const logout = async (req, res, next) => {
     let cryptedToken = crypt(req.body.token);
     const connection = await LastConnections
     .findOneAndUpdate(
-      {token: cryptedToken}, 
+      {token: cryptedToken},
       {expired: true},
       {sort: {created_at : -1}}
     );
         
-    // I need to destroy the header in the frontend as well
     res.json({ message: 'Logout successful' }); 
   } catch (err) {
     if (err.message === 'Invalid credentials') return res.status(401).json({
