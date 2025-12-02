@@ -1,3 +1,5 @@
 node_modules/
 .env
 /doc/
+/sonar-project.properties
+/.github

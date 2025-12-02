@@ -8,16 +8,17 @@ const createUser = async (req, res, next) => {
     let error = [];
 
     // test isAdmin : allows for admins creation
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      let user = decoded;
-      if (!isAdmin(user)){
-        role = "user";
-      }
-    } else {
-      role = "user";
-    }
+    // deactivated to allow admin creation from postman
+    // const authHeader = req.headers.authorization;
+    // if (authHeader) {
+    //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    //   let user = decoded;
+    //   if (!isAdmin(user)){
+    //     role = "user";
+    //   }
+    // } else {
+    //   role = "user";
+    // }
     
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
