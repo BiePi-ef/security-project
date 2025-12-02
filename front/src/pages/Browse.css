@@ -1,0 +1,22 @@
+.browse-container { padding: 20px; }
+
+.browse-controls { margin-bottom: 16px; display: flex; justify-content: space-between; }
+.browse-controls-inner { display:flex; gap:8px; align-items:center; }
+
+.browse-list-wrapper { border-top: 1px solid #333; padding-top: 12px; }
+.browse-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+.browse-card { background: #111; border: 1px solid #2b2b2b; padding: 12px; border-radius: 8px; color: #eee; }
+.browse-card-header { display:flex; justify-content: space-between; align-items: baseline; }
+.browse-card-title { margin:0; font-size: 1.05rem; }
+.browse-card-visibility { color: #aaa; }
+.browse-card-category { color: #ddd; margin-top:6px; }
+.browse-card-tags { margin-top:8px; }
+.browse-tag { display:inline-block; background:#222; color:#9fd; padding:4px 8px; border-radius:12px; margin-right:6px; font-size:12px; }
+.browse-card-desc { margin-top:8px; color:#bbb; }
+
+.browse-info { padding:12px; color:#ccc; }
+.browse-error { color: salmon; }
+
+.browse-select { padding:8px 10px; border-radius:6px; border:1px solid #333; background:#1a1a1a; color:#fff; }
+.browse-search { padding:8px 12px; border-radius:6px; border:1px solid #333; background:#111; color:#fff; min-width:280px; }

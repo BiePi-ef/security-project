@@ -1,11 +1,10 @@
-import './App.css'
 import {BrowserRouter, Route, Routes } from 'react-router-dom';
 import Welcome from './pages/Welcome';
-import Browse from './pages/register/Register';
+import Browse from './pages/Browse';
 import CreateObject from './pages/CreateObject';
 import Profile from './pages/Profile';
-import Login from './pages/Login';
-import Register from './pages/register/Register';
+import Login from './pages/auth/login/Login';
+import Register from './pages/auth/register/Register';
 import Navbar from './components/Navbar';
 
 function App() {

@@ -27,7 +27,8 @@ export default function Register() {
   };
 
   const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // limited the size of mail to prevent "super-linear runtime due to backtracking"
+    const emailRegex = /^[^\s@]{1,64}@[^\s@]{1,152}\.[^\s@]{1,102}$/;
     return emailRegex.test(email);
   };
 
@@ -82,7 +83,6 @@ export default function Register() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Origin': 'http://localhost:5173'
         },
         body: JSON.stringify({
           userName: formData.userName,
@@ -90,11 +90,13 @@ export default function Register() {
           password: formData.password,
           role: 'user',
         }),
-        
       });
-
+      
+      // reset passwords as soon as the request is sent. Makes it slightly harder to get the data from the client browser with a mean script.
+      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+      
       const data = await response.json();
-
+      
       if (!response.ok) {
         if (response.status === 409) {
           setApiError('Email already in use');

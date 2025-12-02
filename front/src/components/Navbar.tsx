@@ -21,20 +21,55 @@ const Navbar: React.FC = () => {
   );
 
   useEffect(() => {
+    // Listen for storage changes from other tabs
     const onStorage = () => {
       setIsLoggedIn(Boolean(localStorage.getItem("token") || localStorage.getItem("user")));
     };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
+    
+    // Also listen for custom event fired in current tab after login
+    const onLoginEvent = () => {
+      setIsLoggedIn(true);
+    };
+    
+    const onLogoutEvent = () => {
+      setIsLoggedIn(false);
+    };
 
-  const handleLogout = () => {
-    // Clear auth-related storage. Adjust keys as needed.
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("auth:login", onLoginEvent);
+    window.addEventListener("auth:logout", onLogoutEvent);
+    
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("auth:login", onLoginEvent);
+      window.removeEventListener("auth:logout", onLogoutEvent);
+    };
+  }, []);
+  
+  const handleLogout = async () => {
+    let token = localStorage.getItem("token");
+
+    const res = await fetch('http://localhost:3001/auth/logout', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ "token": token }),
+    })
+    
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.message || 'Logout failed');
+      return;
+    }
+   
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
-    // Optionally inform backend about logout here
-    navigate("/welcome");
+    window.dispatchEvent(new Event("auth:logout"));
+    
+    navigate("/");
   };
 
   return (
@@ -44,10 +79,10 @@ const Navbar: React.FC = () => {
           JDR BDD
         </Link>
         <Link to="/browse" style={styles.link}>
-          All Community Objects
+          All_Community_Objects
         </Link>
         <Link to="/createObject" style={styles.link}>
-          Create Object
+          Create_Object
         </Link>
       </div>
 
