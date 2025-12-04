@@ -8,28 +8,30 @@
   - tbd
 
 ## Summary
-Library of different Roleplay Tabletop Game 'objects'. Users can access 'public' objects, made by other users, and create their own, public or private.
+Library of different Roleplay Tabletop Game 'objects'. 
+Users can access 'public' objects, made by other users, and create their own, public or private.
+Admins can additionaly see a list of all users.
 
-### Functions :
-  - Admin : 
-    - create new objects
-    - see users
-  - Users :
-    - rent objects
-    optional : create a character ?
+## start 
+in ./server :
+> docker compose up
+(on first init only. Start the container otherwise)
+> npm start
+in ./front :
+> npm run dev
 
 ## Security
 ### dev
-Sonarqube tests are not automatically run on commit or push. Indeed, sonarqube-scanner has been installed on  front and server sides, but the github repo encompasses both. If I have more time, a later solution will run both parts as I push. For now, one need to manually run the test with the following command :
+Sonarqube tests are not automatically run on commit or push. Indeed, sonarqube-scanner has been installed on  front and server sides, but the github repo encompasses both. If I have more time, a later solution will run both parts as I push. For now, one need to manually run the test with the following command (from root) :
 sonar-scanner \
   -Dsonar.projectKey=my-sonarqube-project-name \
-  -Dsonar.sources= front/. \
+  -Dsonar.sources=front/. \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=YOUR_GENERATED_TOKEN
 and
 sonar-scanner \
   -Dsonar.projectKey=my-sonarqube-project-name \
-  -Dsonar.sources= server/. \
+  -Dsonar.sources=server/. \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=YOUR_GENERATED_TOKEN
 
