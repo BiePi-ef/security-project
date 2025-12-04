@@ -33,8 +33,17 @@ sonar-scanner \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=YOUR_GENERATED_TOKEN
 
+### Create new admin
+new admins can only be created using postman or a shell. No frontend allows it.
+
 ## BDD
 make sure the container and volumes are not already existing when building, or it won't be able to generate properly.
+> docker compose up
+On server launch, we create an admin if the count of total admins is null. 
+The credentials are defined in server/.env, and are by default :
+BOOTSTRAP_ADMIN_EMAIL="Manel@BENHAMOUDA.test"
+BOOTSTRAP_ADMIN_PASSWORD="Password1234!"
+BOOTSTRAP_ADMIN_USERNAME="Manel BENHAMOUDA" // not necessary
 
 ## confidentialité :
 Votre historique de connection (date et heure) est conservée, pour des raisons de sécurité.

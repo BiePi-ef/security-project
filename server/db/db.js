@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { bootstrapAdmin } from "./bootstrapAdmin.js";
 process.loadEnvFile("./.env");
 
 const port = process.env.DB_PORT;
@@ -15,5 +16,7 @@ await mongoose.connect(mongoURI)
   .catch(err => {
     console.error('MongoDB connection error:', err);
   });
+
+await bootstrapAdmin();
 
 export default mongoose;

@@ -46,7 +46,7 @@ export default function Login() {
       const userId = data.id || null;
       if (userId) {
         // get rid of data.role here and on the backend return if it proves to be unsafe
-        const user = { id: userId, role: data?.role ?? null };
+        const user = { id: userId, role: data.role };
         localStorage.setItem('user', JSON.stringify(user));
       }
 

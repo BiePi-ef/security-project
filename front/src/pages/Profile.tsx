@@ -2,7 +2,7 @@
 export default function Profile(){
   return (
     <div>
-      <p>Profile...</p>
+      <p>not implemented yet</p>
     </div>
   )
 }

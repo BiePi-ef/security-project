@@ -8,17 +8,16 @@ const createUser = async (req, res, next) => {
     let error = [];
 
     // test isAdmin : allows for admins creation
-    // deactivated to allow admin creation from postman
-    // const authHeader = req.headers.authorization;
-    // if (authHeader) {
-    //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    //   let user = decoded;
-    //   if (!isAdmin(user)){
-    //     role = "user";
-    //   }
-    // } else {
-    //   role = "user";
-    // }
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      let user = decoded;
+      if (!isAdmin(user)){
+        role = "user";
+      }
+    } else {
+      role = "user";
+    }
     
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
@@ -63,8 +62,7 @@ const createUser = async (req, res, next) => {
     const cryptedPassword = crypt(password);
     
     // Single insert, no session needed
-    const newUser = User.create({ userName, email, cryptedPassword, role });
-
+    const newUser = await User.create({ userName, email, cryptedPassword, role });
     return res.status(201).json(newUser);
   } catch (err) {
     // Handle duplicate email

@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Login from './pages/auth/login/Login';
 import Register from './pages/auth/register/Register';
 import Navbar from './components/Navbar';
+import Users from './pages/Users/Users';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
+        <Route path="/users" element={<Users/>} />
       </Routes>
     </BrowserRouter>
   );

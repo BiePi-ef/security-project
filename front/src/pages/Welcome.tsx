@@ -2,7 +2,7 @@
 export default function Welcome() {
   return (
     <div>
-      <p>Welcome...</p>
+      <p>Welcome !</p>
     </div>
   )
 }

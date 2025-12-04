@@ -19,11 +19,17 @@ const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     Boolean(localStorage.getItem("token") || localStorage.getItem("user"))
   );
+  const [role, setRole] = useState<String>(
+    localStorage.getItem("user") ? 
+    JSON.parse(localStorage.getItem("user") ?? "")?.role :
+    ""
+  )
 
   useEffect(() => {
     // Listen for storage changes from other tabs
     const onStorage = () => {
       setIsLoggedIn(Boolean(localStorage.getItem("token") || localStorage.getItem("user")));
+      setRole(JSON.parse(localStorage.getItem("user") ?? "")?.role ?? "");
     };
     
     // Also listen for custom event fired in current tab after login
@@ -85,10 +91,14 @@ const Navbar: React.FC = () => {
           Create_Object
         </Link>
       </div>
+      
 
       <div style={styles.right}>
-        {isLoggedIn ? (
-          <>
+        { isLoggedIn && role === "admin" ? (
+            <Link to="/users" style={styles.link}>Manage_Users</Link>
+          ) : <></>}
+        {isLoggedIn ?
+          (<>
             <Link to="/profile" style={styles.link}>
               Profile
             </Link>
